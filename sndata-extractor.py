@@ -12,8 +12,8 @@ if len(sys.argv) < 2 or sys.argv[1] == "-h":
     print("FILE                 The extracted .sndata header from a PS2 game\n")
     print("OFFSET, eg. 0x3d64   The offset below the list of function names that locates")
     print("                     the name of the first entry in the list in the OG ELF\n")
-    print("-i                   output IDA .py script\n")
-    print("-g                   output Ghidra script (use this with ImportSymbolsScript.py)")
+    print("-i                   Output IDA .py script\n")
+    print("-g                   Output Ghidra script (use this with ImportSymbolsScript.py)")
     exit()
 
 # input file
