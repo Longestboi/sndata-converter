@@ -30,8 +30,8 @@ This script **REQUIRES** the .sndata header to be extracted from the ELF binary.
 this will output the .sndata header of a PS2 ELF binary.
 
 ### Quirks:
-The python script **REQUIRES** -i or -g to be stated; Otherwise, the script will error.
-I have not tested the Ida script output, because I don't have Ida; If the Ida script doesn't work, please report it.
+1. The python script **REQUIRES** -i or -g to be stated; Otherwise, the script will error.  
+2. I have not tested the Ida script output, because I don't have Ida; If the Ida script doesn't work, please report it.
 
 ### References:
 [@diwidog](https://twitter.com/diwidog/status/1188626209560596480) - For originally reversing the .sndata header format.
