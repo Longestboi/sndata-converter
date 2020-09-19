@@ -7,7 +7,7 @@ import binascii
 # If -h or no arguments are passed to the script 
 if len(sys.argv) < 2 or sys.argv[1] == "-h":
     print("usage: \n" + sys.argv[0] + " [-h]" + " FILE OFFSET -i/-g (you are required to choose either)")
-    print("This program only works on extracted .sndata headers and outputs to stdout.\n" + "Author:Andrew Long, 2020.")
+    print("This program only works on extracted .sndata headers and outputs to stdout.\n" + "Author: Andrew Long, 2020.")
     print("-h                   Display this text")
     print("FILE                 The extracted .sndata header from a PS2 game\n")
     print("OFFSET, eg. 0x3d64   The offset below the list of function names that locates")
