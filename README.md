@@ -23,9 +23,9 @@ OFFSET, eg. 0x3d64   The offset below the list of function names that locates
 -g                   output Ghidra script (use this with ImportSymbolsScript.py)
 ```
 ### Extracting .sndata header from ELF binary:
-This script **REQUIRES** the .sndata header to be extracted from the ELF binary. To extract the .sndata header from a PS2 ELF binary, you have to source a copy of the official PS2 SDK. Then find "ee-objcopy" and run the command:
+This script **REQUIRES** the .sndata header to be extracted from the ELF binary. To extract the .sndata header from a PS2 ELF binary, get a copy of the Ps2DEV toolchain, or the official PS2 SDK. Then find "ee-objcopy" and run the command:
 ```
-./ee-objcopy -O binary -j .sndata REPLACE_ME.elf REPLACE_ME.sndata
+ee-objcopy -O binary -j .sndata REPLACE_ME.elf REPLACE_ME.sndata
 ```
 this will output the .sndata header of a PS2 ELF binary.
 
