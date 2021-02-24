@@ -1,37 +1,30 @@
 # sndata-extractor
 
-## **WARNING!!!**
-This is my first ever python script there will be bugs and errors; Some of which I may or may not know how to fix.
-Moreover, this is essentially my first time putting out code on Github.
+###### Preface:
+###### I've entirely re-written this program so it can accurately extract debug symbols and support both SNR1 & SNR2 sndata section header formats. As well as creating documentation of the section header format.
 
 ### Description:
-A python script that can extract both function names and offsets. And puts those functions and offsets into a script for either Ghidra or Ida to use. This prints the script directly to stdout, use output redirection to save the script to a file.
+A python script that can extract both function names and offsets. And puts those functions and offsets into a script for either Ghidra or Ida to use.
+
+I still haven't tested this with IDA, so report and problems if there are any.
 
 ### Usage:
 ```
-sndata-extractor.py [-h] FILE OFFSET -i/-g 
-This program only works on extracted .sndata headers and outputs to stdout.
-Author: Andrew Long, 2020.
--h                   Display this text
-FILE                 The extracted .sndata header from a PS2 game
+usage: sndata-converter PS2-ELF Output [options]
 
-OFFSET, eg. 0x3d64   The offset below the list of function names that locates
-                     the name of the first entry in the list in the OG ELF
+Extract Debug Symbols from PS2 ELF files the contain a .sndata section
+header
 
--i                   output IDA script
+positional arguments:
+  PS2 ELF       Input file
+  Output        Output file
 
--g                   output Ghidra script (use this with ImportSymbolsScript.py)
+optional arguments:
+  -h, --help    show this help message and exit
+  -i, --ida     Output Ida Python script
+  -g, --ghidra  Output script for use with Ghidra's 'ImportSymbolsScript.py'
+
 ```
-### Extracting .sndata header from ELF binary:
-This script **REQUIRES** the .sndata header to be extracted from the ELF binary. To extract the .sndata header from a PS2 ELF binary, get a copy of the Ps2DEV toolchain, or the official PS2 SDK. Then find "ee-objcopy" and run the command:
-```
-ee-objcopy -O binary -j .sndata REPLACE_ME.elf REPLACE_ME.sndata
-```
-this will output the .sndata header of a PS2 ELF binary.
-
-### Quirks:
-1. The python script **REQUIRES** -i or -g to be stated; Otherwise, the script will error.  
-2. I have not tested the Ida script output, because I don't have Ida; If the Ida script doesn't work, please report it.
 
 ### References:
 [@diwidog](https://twitter.com/diwidog/status/1188626209560596480) - For originally reversing the .sndata header format.

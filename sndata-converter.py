@@ -9,13 +9,14 @@ import argparse
 from elftools.elf.elffile import ELFFile
 
 # argparse ops here
-argparser = argparse.ArgumentParser(description='Extract Debug Symbols from PS2 ELF files the contain a .sndata section header')
+argparser = argparse.ArgumentParser(prog="sndata-converter", usage='%(prog)s PS2-ELF Output [options]',  description='Extract Debug Symbols from PS2 ELF files the contain a .sndata section header')
 group = argparser.add_mutually_exclusive_group()
-group.add_argument("-i", "--ida", help="Output Ida Python script", action="store_true")
-group.add_argument("-g", "--ghidra", help="Output script for use with Ghidra's 'ImportSymbolsScript.py'", action="store_true")
 
 argparser.add_argument("PS2 ELF", help="Input file")
 argparser.add_argument("Output", help="Output file")
+
+group.add_argument("-i", "--ida", help="Output Ida Python script", action="store_true")
+group.add_argument("-g", "--ghidra", help="Output script for use with Ghidra's 'ImportSymbolsScript.py'", action="store_true")
 
 args = argparser.parse_args()
 
