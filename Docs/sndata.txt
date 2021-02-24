@@ -1,0 +1,25 @@
+sndata research
+
+"SNR1" and "SNR2" seem to be using the same/Similar format so there is no real need to differentiate between the two.
+However, if in the future there is some difference that's found, the Python class "parseSndataHeader()" can fetch the Magic of the .sndata section header.
+
+All memory address pointers in the .sndata header are big endian and need to be converted.
+For example, the the pointer to the "memset" function name is read as "3D F7 2F 00", but the pointer is actually "00 2F F7 3D".
+
+	┌────────┬────────────────────────────────────────┬─────────────────────────────────────────────────────────────┐
+	│  type  │           Length / Content             │                         Description                         │
+	├────────┼────────────────────────────────────────┼─────────────────────────────────────────────────────────────┤
+	│SNR#    │  \x53\x4E\x52\x31 or \x53\x4E\x52\x32  │  File Magic                                                 │
+	│BE ME   │  4 bytes                               │  No idea                                                    │
+	│UINT32? │  4 bytes                               │  No idea                                                    │
+	│BE MA   │  4 bytes                               │  Points to 12 bytes before the begining of the Address list │
+	│UINT32  │  4 bytes                               │  Number of Functions in the Address & Name list             │
+	│Zero    │  12 bytes                              │  12 \x00 bytes                                              │
+	└────────┴────────────────────────────────────────┴─────────────────────────────────────────────────────────────┘
+BE = Big Endian
+MA = Memory Address
+
+After the "SNR#" magic, there is a four byte long big endian formatted memory address, I have no idea what this points to.
+
+Function name		func name Memory address in .sndata	Memory address of func in ELF		??? data
+memset			0x002ff73d				0x002bfe8c				0x0002ca6d
