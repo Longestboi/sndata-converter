@@ -1,4 +1,4 @@
-#/usr/bin/env python3
+#!/usr/bin/env python3
 
 import sys
 import os
@@ -29,6 +29,8 @@ skipSize = 12
 inFile = open(sys.argv[1], 'rb')
 elffile = ELFFile(inFile)
 
+hasSndata = False
+
 for section in elffile.iter_sections():
     if section.name.startswith('.sndata'):
          # Convert big endian sndata section header memory address
@@ -39,7 +41,11 @@ for section in elffile.iter_sections():
         sndataOffsetInt = int.from_bytes(sndataOffset, byteorder="big")     # Convert sndataOffset to int
         memDiff = sndataAddrInt - sndataOffsetInt       # Difference between the memory address and 
         #print(section.name + " " + str(sndataAddr))
+        hasSndata = True
 
+if hasSndata == False:
+    print("This ELF may not have a .sndata header section.\nCheck if the binary has \"SNR1\" or \"SNR2\"")
+    exit()
 
 # Testing
 class parseSndataHeader:
