@@ -1,5 +1,86 @@
 #!/usr/bin/env python3
+import sys, os, io
+from elftools.elf.elffile import ELFFile, ELFError
 
+class snPs2ELF(object):
+    """ Handles loading of ELF and interfacing with sndata header section """
+
+    # Constants
+    PS2MAGIC  = "ELF"
+    SNSYSHEAD = ".sndata"
+    SNSYSSNR1 = "SNR1"
+    SNSYSSNR2 = "SNR2"
+
+    ## File Data
+    ps2file = io.TextIOWrapper
+    """ Raw elf data file """
+    ps2elf = ELFFile
+    """ ELF file object """
+    sndata = io.BytesIO
+    """ sndata Header Section """
+    sndata_functions = list
+    """ List of all function and their offsets """
+
+    ### Sndata Data
+    class __sndata_function(object):
+        """ Used like a struct to store sndata function info """
+
+        function_name: str
+        """ Function name """
+        function_offset: bytes
+        """ Function offset """
+
+        def __init__(self, func_name: str, func_offset: bytes):
+            self.function_name = func_name
+            self.function_offset = func_offset
+            return
+
+    
+
+    def __init__(self, infile: str):
+        # Error checking 
+        self.__error_handler(infile)
+
+        return
+        
+    def __error_handler(self, infile: str):
+        ## File unable to be opened
+        try:
+            self.ps2file = open(infile, "rb")
+        except (FileNotFoundError, IOError) as error:
+            print("Unable to open file \"" + infile + "\"")
+            exit()
+        
+        ## File not an elf file
+        try:
+            self.ps2elf = ELFFile(self.ps2file)
+        except ELFError:
+            print("Input is not an ELF file")
+            exit()
+        
+        ## File does not have sndata header section
+        try:
+            if(self.ps2elf.get_section_by_name(self.SNSYSHEAD) == None):
+                raise
+        except:
+            print("ELF file does not have an sndata header section")
+            exit()
+        
+        return
+
+    def __init_constants():
+        
+        return
+
+
+
+def main():
+    elfFile = snPs2ELF(sys.argv[1])
+
+if __name__ == "__main__":
+    main()
+
+'''
 import sys
 import os
 import string
@@ -177,3 +258,4 @@ def main():
     
 if __name__ == '__main__':
     main()
+'''
