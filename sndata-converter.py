@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 import sys, os, io
-from elftools.elf.elffile import ELFFile, ELFError
+from elftools.elf.elffile import ELFFile, ELFError, Section
 
 class snPs2ELF(object):
     """ Handles loading of ELF and interfacing with sndata header section """
@@ -10,18 +10,38 @@ class snPs2ELF(object):
     SNSYSHEAD = ".sndata"
     SNSYSSNR1 = "SNR1"
     SNSYSSNR2 = "SNR2"
+    
+    MAGICOFF        = 0 # 0x0
+    UNKNOWN1OFF     = 4
+    UNKNOWN2OFF     = 8
+    ADDRESSLISTOFF  = 12
+    NUMBEROFFUNCOFF = 16
 
-    ## File Data
+    # File Data
     ps2file = io.TextIOWrapper
     """ Raw elf data file """
     ps2elf = ELFFile
     """ ELF file object """
-    sndata = io.BytesIO
-    """ sndata Header Section """
+    sndata = Section
+    """ Sndata Header Section """
+    sndata_data = io.BytesIO
+    """ Data of sndata header section """
     sndata_functions = list
-    """ List of all function and their offsets """
+    """ List of all functions and their offsets in the sndata header section """
 
-    ### Sndata Data
+    # File Constants
+    SNDATA_magic = str
+    """ Magic of the header section data """
+    SNDATA_unknown1 = int
+    """ Unknown data 1 """
+    SNDATA_unknown2 = int
+    """ Unknown data 2 """
+    SNDATA_addressList = int
+    """ List of Address data """
+    SNDATA_numFuncs = int
+    """ The number of function in the sndata header section """
+
+    ### Sndata function class
     class __sndata_function(object):
         """ Used like a struct to store sndata function info """
 
@@ -35,12 +55,10 @@ class snPs2ELF(object):
             self.function_offset = func_offset
             return
 
-    
-
     def __init__(self, infile: str):
         # Error checking 
         self.__error_handler(infile)
-
+        self.__init_constants()
         return
         
     def __error_handler(self, infile: str):
@@ -68,14 +86,38 @@ class snPs2ELF(object):
         
         return
 
-    def __init_constants():
-        
-        return
+    def __init_constants(self):
+        # Sndata section and section data
+        self.sndata = self.ps2elf.get_section_by_name(self.SNSYSHEAD)
+        self.sndata_data = io.BytesIO(self.sndata.data())
 
+        # Populate Constants
+        ## Magic
+        self.sndata_data.seek(self.MAGICOFF, 0)
+        self.SNDATA_magic = str(self.sndata_data.read(4), "ascii")
+
+        ## Unknowns
+        self.sndata_data.seek(self.UNKNOWN1OFF, 0)
+        self.UNKNOWN1OFF = int.from_bytes(self.sndata_data.read(4), byteorder="little")
+        self.UNKNOWN2OFF = int.from_bytes(self.sndata_data.read(4), byteorder="little")
+
+        ## Addresses
+        self.sndata_data.seek(self.ADDRESSLISTOFF, 0)
+        self.SNDATA_addressList = hex(int.from_bytes(self.sndata_data.read(4), byteorder="little")
+)
+        ## Number of functions
+        self.sndata_data.seek(self.NUMBEROFFUNCOFF, 0)
+        self.SNDATA_numFuncs = int.from_bytes(self.sndata_data.read(4), byteorder="little")
+
+        # Reset seek
+        self.sndata_data.seek(0, 0)
+        return
+    
 
 
 def main():
     elfFile = snPs2ELF(sys.argv[1])
+    print(elfFile.SNDATA_numFuncs)
 
 if __name__ == "__main__":
     main()

@@ -21,5 +21,5 @@ MA = Memory Address
 
 After the "SNR#" magic, there is a four byte long big endian formatted memory address, I have no idea what this points to.
 
-Function name		func name Memory address in .sndata	Memory address of func in ELF		??? data
-memset			0x002ff73d				0x002bfe8c				0x0002ca6d
+Function name	| func name Memory address in .sndata | Memory address of func in ELF | ??? data
+memset			| 0x002ff73d						  | 0x002bfe8c					  | 0x0002ca6d
