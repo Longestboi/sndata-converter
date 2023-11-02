@@ -1,8 +1,5 @@
 # sndata-converter
 
-###### Preface:
-###### I've entirely re-written this program so it can accurately extract debug symbols and support both SNR1 & SNR2 sndata section header formats. As well as creating documentation of the section header format.
-
 ### Description:
 A python script that can extract both function names and offsets. And puts those functions and offsets into a script for either Ghidra or Ida to use.
 
